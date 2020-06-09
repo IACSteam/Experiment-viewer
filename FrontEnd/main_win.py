@@ -2,15 +2,16 @@ from tkinter import *
 
 from FrontEnd.top_drop_down_menus import t_d_d_m_cls as t_d_d_m
 from FrontEnd.experiment_frame import exp_fr_cls as exp_fr
-from FrontEnd.review_frame import rev_fr_cls as rev_fr
+from FrontEnd.view_frame import view_fr_cls as view_fr
 
 from BackEnd.keyboard_binds import k_b_cls as k_b
+from BackEnd.view_frame_back import view_frame_graphs as graphs
 
 class main_win_cls(t_d_d_m,
                    k_b,
                    exp_fr,
-                   rev_fr):
-    def __init__(self, main_win_settings, comboboxes_settings, frames_settings):
+                   view_fr, graphs):
+    def __init__(self, main_win_settings, comboboxes_settings, frames_settings, labels_settings, buttons_settings):
 
         # Параметры ...
         # ... главного окна
@@ -24,6 +25,10 @@ class main_win_cls(t_d_d_m,
         self.main_win_zoom = main_win_settings[8]
         # ... ... рамка информации
         self.info_frame = None
+        self.info_fr_test_but1 = None
+        self.info_fr_test_but2 = None
+        self.info_fr_test_but3 = None
+        self.info_fr_test_but4 = None
 
         # ... выпадающих меню
         self.comboboxes_width = comboboxes_settings[0]
@@ -39,9 +44,26 @@ class main_win_cls(t_d_d_m,
         self.frames_border_color = frames_settings[3]
         self.frames_border_thick = frames_settings[4]
 
+        # ... надписей (Label)
+        self.labels_font = labels_settings[0]
+        self.labels_text_color = labels_settings[1]
+
+        # ... кнопок (Buttons)
+        self.buttons_bg_color = buttons_settings[0]
+        self.buttons_active_color = buttons_settings[1]
+        self.buttons_text_normal_color = buttons_settings[2]
+        self.buttons_text_active_color = buttons_settings[3]
+        self.buttons_text_font = buttons_settings[4]
+        self.buttons_relief = buttons_settings[5]
+        self.buttons_overelief = buttons_settings[6]
+        self.buttons_select_relief = buttons_settings[7]
+        self.buttons_padx = buttons_settings[8]
+        self.buttons_pady = buttons_settings[9]
+
         # ... внутренние переменные
         self.__title_icon_main_win = None  # Иконка гл. окна
         self.__title_icon_main_win_dir = main_win_settings[7]  # Дирректория иконки гл. окна
+        self.exp_groups_and_subgroups = []  # Список всех групп и их подгрупп эксперимента
 
         # Объявление главного окна как объект
         self.root = Tk()
@@ -60,7 +82,9 @@ class main_win_cls(t_d_d_m,
         exp_fr.__init__(self)
 
         # Иницилизация рамки анализа
-        rev_fr.__init__(self)
+        view_fr.__init__(self)
+        # ... графики
+        graphs.__init__(self)
 
         # self.test_height = 260
         # self.root.after(250, self.test)
@@ -105,7 +129,69 @@ class main_win_cls(t_d_d_m,
         self.info_frame = Frame(self.root, bg=self.frames_color, height=20,
                                 highlightcolor=self.frames_border_color)
 
+        self.info_frame_label = Label(self.info_frame,
+                                      text="Надпись описания некторых виджетов программы",
+                                      font=self.labels_font,
+                                      bg=self.frames_color,
+                                      fg=self.labels_text_color)
+
+        # Кнопки для отладки !!!
+        self.info_fr_test_but1 = Button(self.info_frame,
+                                        image=None,
+                                        text="Очистить оси",
+                                        activebackground=self.buttons_active_color,
+                                        relief=self.buttons_relief,
+                                        overrelief=self.buttons_overelief,
+                                        bg=self.buttons_bg_color,
+                                        fg=self.buttons_text_normal_color,
+                                        activeforeground=self.buttons_text_active_color,
+                                        font=self.buttons_text_font,
+                                        command=self.clear_axes
+                                        )
+        self.info_fr_test_but2 = Button(self.info_frame,
+                                        image=None,
+                                        text="Построить",
+                                        activebackground=self.buttons_active_color,
+                                        relief=self.buttons_relief,
+                                        overrelief=self.buttons_overelief,
+                                        bg=self.buttons_bg_color,
+                                        fg=self.buttons_text_normal_color,
+                                        activeforeground=self.buttons_text_active_color,
+                                        font=self.buttons_text_font,
+                                        command=self.build_plot
+                                        )
+        self.info_fr_test_but3 = Button(self.info_frame,
+                                        image=None,
+                                        text="Генер.",
+                                        activebackground=self.buttons_active_color,
+                                        relief=self.buttons_relief,
+                                        overrelief=self.buttons_overelief,
+                                        bg=self.buttons_bg_color,
+                                        fg=self.buttons_text_normal_color,
+                                        activeforeground=self.buttons_text_active_color,
+                                        font=self.buttons_text_font,
+                                        command=self.rand_axes_x_y
+                                        )
+
+        self.info_fr_test_but4 = Button(self.info_frame,
+                                        image=None,
+                                        text="Отладка 4",
+                                        activebackground=self.buttons_active_color,
+                                        relief=self.buttons_relief,
+                                        overrelief=self.buttons_overelief,
+                                        bg=self.buttons_bg_color,
+                                        fg=self.buttons_text_normal_color,
+                                        activeforeground=self.buttons_text_active_color,
+                                        font=self.buttons_text_font,
+                                        command=None
+                                        )
+
         self.info_frame.pack(side=BOTTOM, padx=0, pady=0, fill=BOTH)
+        self.info_frame_label.pack(side=LEFT)
+        self.info_fr_test_but4.pack(side=RIGHT)
+        self.info_fr_test_but3.pack(side=RIGHT)
+        self.info_fr_test_but2.pack(side=RIGHT)
+        self.info_fr_test_but1.pack(side=RIGHT)
 
     # Функция вызываемая при закрытии главного окна
     def close_main_win(self, event=None):

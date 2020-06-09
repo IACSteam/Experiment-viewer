@@ -1,14 +1,14 @@
 # Настройки главного окна
 def main_win_settings():
-    width = 800                             # 0
-    height = 600                            # 1
-    resize_x = True                         # 2
-    resize_y = True                         # 3
-    min_size_flag = False                            # 4
-    title = "Experiment Reviewer"           # 5
-    color = 'white'                         # 6
-    title_icon_dir = 'Icons/title_icon.png'  # 7
-    zoomed = False     # 8
+    width = 800
+    height = 600
+    resize_x = True
+    resize_y = True
+    min_size_flag = False
+    title = "Experiment viewer"
+    color = 'white'
+    title_icon_dir = 'Icons/title_icon.png'
+    zoomed = False
 
     return [width, height,
             resize_x, resize_y,
@@ -42,4 +42,25 @@ def frames_settings():
             color,
             border_color, border_thick]
 
+# Настройка надписей(Frames)
+def labels_settings():
+    font = 'Consolas 10'
+    bg = 'black'
+    return [font, bg]
 
+def buttons_settings():
+    bg_color = 'gray'
+    active_color = 'white'
+    text_normal_color = 'black'
+    text_active_color = 'green'
+    text_font = 'Consolas 10'
+    relief = "raised"
+    overelief = "ridge"
+    select_relief = 'groove'
+    padx = 0
+    pady = 0
+
+    return [bg_color, active_color,
+            text_normal_color, text_active_color, text_font,
+            relief, overelief, select_relief,
+            padx, pady]
