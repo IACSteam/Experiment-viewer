@@ -1,1 +1,9 @@
 .idea/
+Pipfile
+Pipfile.lock
+.env.db
+.env.pgadmin
+.env
+.vscode/
+BackEnd/config.py
+BackEnd/__pycache__/
