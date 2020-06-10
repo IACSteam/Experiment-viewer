@@ -1,4 +1,9 @@
 .idea/
+download/
+Excel_Functions/
+Exp_Test1.xlsx
+BackEnd/__pycache__/
+FrontEnd/__pycache__/
 Pipfile
 Pipfile.lock
 .env.db
