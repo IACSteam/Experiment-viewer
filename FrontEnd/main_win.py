@@ -6,10 +6,12 @@ from FrontEnd.view_frame import view_fr_cls as view_fr
 
 from BackEnd.keyboard_binds import k_b_cls as k_b
 from BackEnd.view_frame_back import view_frame_graphs as graphs
+from BackEnd.experiment_frame_back import experiment_treeview_funs as exp_tree
+
 
 class main_win_cls(t_d_d_m,
                    k_b,
-                   exp_fr,
+                   exp_fr, exp_tree,
                    view_fr, graphs):
     def __init__(self, main_win_settings, comboboxes_settings, frames_settings, labels_settings, buttons_settings):
 
@@ -80,6 +82,8 @@ class main_win_cls(t_d_d_m,
 
         # Иницилизация рамки эксперимента
         exp_fr.__init__(self)
+        # ... дерево (Treeview)
+        exp_tree.__init__(self)
 
         # Иницилизация рамки анализа
         view_fr.__init__(self)
@@ -99,8 +103,8 @@ class main_win_cls(t_d_d_m,
         # Размеры и положение
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
-        main_x = screen_width/2 - self.main_win_width/2
-        main_y = screen_height/2 - self.main_win_height/2
+        main_x = screen_width / 2 - self.main_win_width / 2
+        main_y = screen_height / 2 - self.main_win_height / 2
         self.root.geometry("+%d+%d" % (main_x, main_y))
         self.root.geometry(str(self.main_win_width) + 'x' + str(self.main_win_height))
         if self.main_win_resize_y == 'True':

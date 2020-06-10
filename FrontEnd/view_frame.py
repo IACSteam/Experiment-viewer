@@ -2,9 +2,11 @@ from tkinter import *
 from tkinter import ttk
 
 import matplotlib
+
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
+
 
 class view_fr_cls():
     def __init__(self):
@@ -59,7 +61,6 @@ class view_fr_cls():
         # Добавление тулбара
         self.rev_toolbar = NavigationToolbar2Tk(self.rev_canva, self.rev_nb_graphs_frame)
         self.rev_toolbar.update()
-
 
     # Упковка рамки обзора эксперимента
     def view_fr_pack(self):

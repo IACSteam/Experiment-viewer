@@ -7,7 +7,6 @@ import copy
 class exp_fr_cls():
     def __init__(self):
         self.__parent = self.root
-        self.__treeview_exp_groups = []
 
         # Рамка эксперимента
         self.experiment_frame = Frame(self.__parent, bg=self.frames_color,
@@ -51,123 +50,45 @@ class exp_fr_cls():
         self.exp_fr_pack()
 
         # Вставка групп и подгрупп(тест)
-        j = 1
-        group_name = "Группа "
-        subgroup_name = "Подгруппа "
-        while j <= 2:
-            self.exp_fr_create_group(group_name=group_name+str(j))
-            i = 1
-            while i <= 25:
-                self.exp_fr_create_subgroup(group_name=group_name+str(j), subgroup_name=subgroup_name+str(i))
-                i += 1
-            j += 1
+        # j = 1
+        # group_name = "Группа "
+        # subgroup_name = "Подгруппа "
+        # while j <= 2:
+        #     self.exp_tree_create_group(group_name=group_name + str(j))
+        #     i = 1
+        #     while i <= 25:
+        #         self.exp_tree_create_subgroup(group_name=group_name + str(j), subgroup_name=subgroup_name + str(i))
+        #         i += 1
+        #     j += 1
 
+    # Обработчик ПКМ по Treeview
     def exp_treeview_RB_handler(self, event=None):
         tag = self.exp_treeview.identify_row(event.y)
-        print(tag)
+        # print(tag)
         self.__exp_treeview_menu.delete(0, 'end')
         if tag == '':
-            self.__exp_treeview_menu.add_command(label='Добавить группу', command=self.exp_fr_create_group)
+            self.__exp_treeview_menu.add_command(label='Добавить группу', command=self.exp_tree_create_group)
         elif tag[:5] == 'GrId_':
             self.exp_treeview.selection_set(tag)
             self.__exp_treeview_menu.add_command(label='Добавить подгруппу',
-                                                 command=lambda: self.exp_fr_create_subgroup(group_name=tag[5:]))
+                                                 command=lambda: self.exp_tree_create_subgroup(group_name=tag[5:]))
             self.__exp_treeview_menu.add_command(label='Переименовать группу', command=None)
-            self.__exp_treeview_menu.add_command(label='Удалить группу', command=None)
+            self.__exp_treeview_menu.add_command(label='Удалить группу',
+                                                 command=lambda: self.exp_tree_delete_group(group_name=tag[5:]))
         elif tag[:8] == 'SubGrId_':
             self.exp_treeview.selection_set(tag)
             self.__exp_treeview_menu.add_command(label='Переименовать подгруппу', command=None)
-            self.__exp_treeview_menu.add_command(label='Удалить подгруппу', command=None)
+            self.__exp_treeview_menu.add_command(label='Удалить подгруппу',
+                                                 command=lambda: self.exp_tree_delete_subgroup(subgroup_tag=tag))
 
+        # Открыть контекстное меню
         self.__exp_treeview_menu.post(event.x_root, event.y_root)
 
+    # Обработчик выделения строки дерева
     def exp_treeview_selection_handler(self, event=None):
         tag = self.exp_treeview.selection()[0]
-        print(tag)
-        pass
-
-    # Создать группу (Treeview)
-    def exp_fr_create_group(self, group_name='Группа 1'):
-        self.exp_groups_and_subgroups.append([group_name.strip(), []])
-
-        # Создание массива названий групп и множества групп для проверки уникальности
-        i = 0
-        arr = []
-        while i < len(self.exp_groups_and_subgroups):
-            arr.append(self.exp_groups_and_subgroups[i][0])
-            i += 1
-        setarr = set(copy.deepcopy(arr))
-
-        while len(arr) != len(setarr):
-            i = 1
-            while True:
-                try:
-                    print(self.exp_groups_and_subgroups[-1][0])
-                    int(self.exp_groups_and_subgroups[-1][0][-i])
-                    pass
-                except:
-                    break
-                i += 1
-
-            if i == 1:
-                num = 1
-                arr[-1] = self.exp_groups_and_subgroups[-1][0] + str(num)
-            else:
-                num = int(self.exp_groups_and_subgroups[-1][0][-i:]) + 1
-                arr[-1] = self.exp_groups_and_subgroups[-1][0][:-(i-1)] + str(num)
-            setarr = set(copy.deepcopy(arr))
-
-            self.exp_groups_and_subgroups[-1][0] = arr[-1]
-
-        print(self.exp_groups_and_subgroups[-1][0])
-        gr_name = self.exp_groups_and_subgroups[-1][0]
-        self.__treeview_exp_groups.append(self.exp_treeview.insert('', "end", 'GrId_'+gr_name, text=gr_name))
-
-    # Создать подгруппу в указанной группе (Treeview)
-    def exp_fr_create_subgroup(self, group_name="Группа 1", subgroup_name="Подгруппа 1"):
-        # Проверка на существование группы
-        i = 0
-        group_index = None
-        while i < len(self.exp_groups_and_subgroups):
-            if group_name.strip() == self.exp_groups_and_subgroups[i][0]:
-                group_index = i
-                break
-            i += 1
-        else:
-            if group_index == None:
-                return
-
-        # Добавляем подгруппу
-        self.exp_groups_and_subgroups[group_index][1].append(subgroup_name.strip())
-        setarr = set(copy.deepcopy(self.exp_groups_and_subgroups[group_index][1]))
-        arr = self.exp_groups_and_subgroups[group_index][1]
-        while len(arr) != len(setarr):
-            i = 1
-            while True:
-                try:
-                    int(self.exp_groups_and_subgroups[group_index][1][-1][-i])
-                except:
-                    break
-                i += 1
-
-            if i == 1:
-                num = 1
-                self.exp_groups_and_subgroups[group_index][1][-1] = \
-                    self.exp_groups_and_subgroups[group_index][1][-1] + str(num)
-            else:
-                num = int(self.exp_groups_and_subgroups[group_index][1][-1][-(i-1):]) + 1
-                self.exp_groups_and_subgroups[group_index][1][-1] = \
-                    self.exp_groups_and_subgroups[group_index][1][-1][:-(i-1)] + str(num)
-
-
-            setarr = set(copy.deepcopy(self.exp_groups_and_subgroups[group_index][1]))
-        subgr_name = self.exp_groups_and_subgroups[group_index][1][-1]
-        try:
-            self.exp_treeview.insert('GrId_'+group_name.strip(), "end", iid='SubGrId_'+group_name.strip()
-                                                                            +'_'+subgr_name,
-                                     text=subgr_name)
-        except:
-            pass
+        names = self.exp_gr_and_subgr_names_from_tag(tag)
+        print(names)
 
     # Упаковка рамки эксперимента
     def exp_fr_pack(self):

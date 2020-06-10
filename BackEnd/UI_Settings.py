@@ -18,7 +18,8 @@ def main_win_settings():
             title_icon_dir,
             zoomed]
 
-# Настройка выпадающих меню (Combobox)
+
+# Настройки выпадающих меню (Combobox)
 def comboboxes_settings():
     width = 10
     height = 11
@@ -30,7 +31,8 @@ def comboboxes_settings():
             padx, pady,
             font]
 
-# Настройка рамок(Frames)
+
+# Настройки рамок(Frames)
 def frames_settings():
     padx = 2
     pady = 2
@@ -42,12 +44,15 @@ def frames_settings():
             color,
             border_color, border_thick]
 
-# Настройка надписей(Frames)
+
+# Настройки надписей(Frames)
 def labels_settings():
     font = 'Consolas 10'
     bg = 'black'
     return [font, bg]
 
+
+# Настройки кнопок(Buttons)
 def buttons_settings():
     bg_color = 'gray'
     active_color = 'white'

@@ -1,5 +1,6 @@
 from tkinter import *
 
+
 class t_d_d_m_cls():
     def __init__(self):
         # Присвоение переменных классу
